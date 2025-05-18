@@ -1,47 +1,49 @@
-const MyBook = require("../models/MyBooks");
-
+const MyBook = require("../models/MyBook");
 
 const getMyBooks = async (req, res) => {
     try {
         const books = await MyBook.find({ userId: req.user._id }).populate("bookId");
         res.json(books);
     } catch (error) {
-        res.ststus(500).json({ message: "Failed to fetch user books!" })
+        res.status(500).json({ message: "Failed to fetch user books!" })
     }
 }
 
 const addMyBook = async (req, res) => {
+    const { bookId } = req.params;
     try {
-        const book = await MyBook.create({ userId: req.user._id, bookId: req.params.bookId });
-        res.ststus(200).json(book);
+        const book = await MyBook.create({ userId: req.user._id, bookId });
+        res.status(200).json(book);
     } catch (error) {
-        res.ststus(400).json({ message: "Failed to add books!" })
+        res.status(400).json({ message: "Failed to add books!" })
     }
 }
 
 const updateStatus = async (req, res) => {
+    const { bookId } = req.params;
+    const { status } = req.body;
     try {
         const updated = await MyBook.findOneAndUpdate(
-            { userId: req.user._id, bookId: req.params.bookId },
-            { status: req.body.status },
-            { new: true }
+            { userId: req.user._id, bookId },
+            { status }
         )
         res.json(updated);
     } catch (error) {
-        res.ststus(400).json({ message: "Failed to update status!" })
+        res.status(400).json({ message: "Failed to update status!" })
     }
 }
 
 const updateRating = async (req, res) => {
+    const { bookId } = req.params;
+    const { rating } = req.body;
     try {
         const updated = await MyBook.findOneAndUpdate(
-            { userId: req.user._id, bookId: req.params.bookId },
-            { rating: req.body.rating },
-            { new: true }
+            { userId: req.user._id, bookId },
+            { rating }
         )
         res.json(updated);
     } catch (error) {
-        res.ststus(400).json({ message: "Failed to update rating!" })
+        res.status(400).json({ message: "Failed to update rating!" })
     }
 }
 
