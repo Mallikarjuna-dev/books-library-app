@@ -14,7 +14,10 @@ connectDB();
 
 const app = express();
 
-app.use(cors({ origin: 'https://books-library-app-five.vercel.app/', credentials: true }));
+app.use(cors({
+    origin: 'https://books-library-app-five.vercel.app',
+    credentials: true,
+}));
 
 app.use(express.json());
 
